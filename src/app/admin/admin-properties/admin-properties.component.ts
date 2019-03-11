@@ -16,6 +16,9 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
   properties: Property[];
   propertiesSubscription: Subscription;
   editProperty = false;
+  photoUploading = false;
+  photoUrl: string;
+  photoUploaded = false;
 
   constructor(private formBuilder: FormBuilder, private propertiesService: PropertiesService) { }
 
@@ -55,6 +58,9 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     const rooms = this.propertyForm.get('rooms').value;
     const description = this.propertyForm.get('description').value;
     const newProperty = new Property(title, category, surface, rooms, description);
+    if (this.photoUrl && this.photoUrl !== '') {
+      newProperty.photo = this.photoUrl;
+    }
 
     if (this.editProperty === true) {
       this.propertiesService.updateProperty(newProperty, id);
@@ -63,6 +69,8 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     }
     $('#propertiesFormModal').modal('hide');
     this.resetPropertyForm();
+    this.photoUploaded = false;
+    this.photoUrl = '';
   }
 
   ngOnDestroy() {
@@ -71,6 +79,9 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
 
   onDeleteProperty(property: Property) {
     this.propertiesService.removeProperty(property);
+    if (property.photo) {
+      this.propertiesService.removePropertyPhoto(property.photo);
+    }
   }
 
   onEditProperty(property: Property, id: number) {
@@ -82,6 +93,17 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     this.propertyForm.get('rooms').setValue(property.rooms);
     this.propertyForm.get('description').setValue(property.description);
     this.editProperty = true;
+  }
+
+  detectFile(event) {
+    this.photoUploading = true;
+    this.propertiesService.uploadFile(event.target.files[0]).then(
+      (url: string) => {
+        this.photoUrl = url;
+        this.photoUploading = false;
+        this.photoUploaded = true;
+      }
+    );
   }
 
 }
