@@ -1,22 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PropertiesService } from '../../services/properties.service';
 import { Property } from '../../models/Property.model';
 import * as $ from 'jquery';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-properties',
   templateUrl: './admin-properties.component.html',
   styleUrls: ['./admin-properties.component.css']
 })
-export class AdminPropertiesComponent implements OnInit {
+export class AdminPropertiesComponent implements OnInit, OnDestroy {
 
   propertyForm: FormGroup;
+  properties: Property[];
+  propertiesSubscription: Subscription;
 
   constructor(private formBuilder: FormBuilder, private propertiesService: PropertiesService) { }
 
   ngOnInit() {
     this.initForm();
+    this.propertiesSubscription = this.propertiesService.propertiesSubject.subscribe(
+      (properties: Property[]) => {
+        this.properties = properties;
+        console.log(this.properties);
+      }
+    );
+    this.propertiesService.getProperties();
+    this.propertiesService.emitProperties();
   }
 
   initForm() {
@@ -39,6 +50,10 @@ export class AdminPropertiesComponent implements OnInit {
     this.propertiesService.createProperty(newProperty);
     $('#propertiesFormModal').modal('hide');
     this.propertyForm.reset();
+  }
+
+  ngOnDestroy() {
+    this.propertiesSubscription.unsubscribe();
   }
 
 }
