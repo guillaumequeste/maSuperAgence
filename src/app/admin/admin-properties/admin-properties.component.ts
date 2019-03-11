@@ -15,6 +15,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
   propertyForm: FormGroup;
   properties: Property[];
   propertiesSubscription: Subscription;
+  editProperty = false;
 
   constructor(private formBuilder: FormBuilder, private propertiesService: PropertiesService) { }
 
@@ -32,6 +33,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.propertyForm = this.formBuilder.group({
+      id: [''],
       title: ['', Validators.required],
       category: ['', Validators.required],
       surface: ['', Validators.required],
@@ -40,16 +42,27 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     });
   }
 
+  resetPropertyForm() {
+    this.editProperty = false;
+    this.propertyForm.reset();
+  }
+
   onSaveProperty() {
+    const id = this.propertyForm.get('id').value;
     const title = this.propertyForm.get('title').value;
     const category = this.propertyForm.get('category').value;
     const surface = this.propertyForm.get('surface').value;
     const rooms = this.propertyForm.get('rooms').value;
     const description = this.propertyForm.get('description').value;
     const newProperty = new Property(title, category, surface, rooms, description);
-    this.propertiesService.createProperty(newProperty);
+
+    if (this.editProperty === true) {
+      this.propertiesService.updateProperty(newProperty, id);
+    } else {
+      this.propertiesService.createProperty(newProperty);
+    }
     $('#propertiesFormModal').modal('hide');
-    this.propertyForm.reset();
+    this.resetPropertyForm();
   }
 
   ngOnDestroy() {
@@ -58,6 +71,17 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
 
   onDeleteProperty(property: Property) {
     this.propertiesService.removeProperty(property);
+  }
+
+  onEditProperty(property: Property, id: number) {
+    $('#propertiesFormModal').modal('show');
+    this.propertyForm.get('id').setValue(id);
+    this.propertyForm.get('title').setValue(property.title);
+    this.propertyForm.get('category').setValue(property.category);
+    this.propertyForm.get('surface').setValue(property.surface);
+    this.propertyForm.get('rooms').setValue(property.rooms);
+    this.propertyForm.get('description').setValue(property.description);
+    this.editProperty = true;
   }
 
 }

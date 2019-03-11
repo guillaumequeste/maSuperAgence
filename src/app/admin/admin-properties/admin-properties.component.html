@@ -2,16 +2,16 @@
     <div class="row">
         <div class="col-12 d-flex">
             <h2 class="font-weight-light"><i class="fas fa-home"></i>Biens immobiliers</h2>
-            <button class="btn btn-primary ml-auto" type="button" data-toggle="modal" data-target="#propertiesFormModal"><i class="fas fa-plus">Ajouter un bien</i></button>
+            <button class="btn btn-primary ml-auto" type="button" (click)="resetPropertyForm()" data-toggle="modal" data-target="#propertiesFormModal"><i class="fas fa-plus">Ajouter un bien</i></button>
         </div>
     </div>
     <hr class="mt-1 mb-5 bg-dark">
     <div class="row">
-        <div *ngFor="let property of properties" class="col-12 shadow-sm p-4 mb-3 bg-light">
+        <div *ngFor="let property of properties; let i = index" class="col-12 shadow-sm p-4 mb-3 bg-light">
             <div class="row">
                 <h3 class="font-weight-normal pl-3">{{ property.title }}</h3>
                 <div class="ml-auto">
-                    <button class="btn btn-primary m-1"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-primary m-1" (click)="onEditProperty(property, i)"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-danger m-1" (click)="onDeleteProperty(property)"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
@@ -27,6 +27,7 @@
                 <h3 class="font-weight-light">Nouveau bien</h3>
                 <hr class="mt-0 bg-dark">
                 <form [formGroup]="propertyForm" class="py-5" (ngSubmit)="onSaveProperty()">
+                    <input type="text" formControlName="id" hidden>
                     <div class="form-froup">
                         <input type="text" formControlName="title" id="title" placeholder="Titre" class="form-control">
                     </div>
