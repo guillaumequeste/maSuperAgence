@@ -56,4 +56,8 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     this.propertiesSubscription.unsubscribe();
   }
 
+  onDeleteProperty(property: Property) {
+    this.propertiesService.removeProperty(property);
+  }
+
 }

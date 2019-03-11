@@ -28,7 +28,16 @@ export class PropertiesService {
   }
 
   removeProperty(property: Property) {
-
+    const index = this.properties.findIndex(
+      (propertyEl) => {
+        if (propertyEl === property) {
+          return true;
+        }
+      }
+    );
+    this.properties.splice(index, 1);
+    this.saveProperties();
+    this.emitProperties();
   }
 
   getProperties() {
