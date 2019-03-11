@@ -1,0 +1,51 @@
+<div class="rounded shadow bg-white p-5">
+    <div class="row">
+        <div class="col-12 d-flex">
+            <h2 class="font-weight-light"><i class="fas fa-home"></i>Biens immobiliers</h2>
+            <button class="btn btn-primary ml-auto" type="button" data-toggle="modal" data-target="#propertiesFormModal"><i class="fas fa-plus">Ajouter un bien</i></button>
+        </div>
+    </div>
+    <hr class="mt-1 mb-5 bg-dark">
+    <div class="row">
+
+    </div>
+</div>
+
+<div class="modal fade" id="propertiesFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="rounded shadow bg-white p-5">
+                <h3 class="font-weight-light">Nouveau bien</h3>
+                <hr class="mt-0 bg-dark">
+                <form [formGroup]="propertyForm" class="py-5" (ngSubmit)="onSaveProperty()">
+                    <div class="form-froup">
+                        <input type="text" formControlName="title" id="title" placeholder="Titre" class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="category" class="input-group-text">Catégorie</label>
+                        </div>
+                        <select formControlName="category" id="category" class="custom-select">
+                          <option value="appartement">Appartement</option>
+                          <option value="maison">Maison</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" id="surface" formControlName="surface" placeholder="surface (m2)" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" id="rooms" formControlName="rooms" placeholder="Nombre de pièce(s)" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="description" placeholder="Description" formControlName="description" rows="3"></textarea>
+                    </div>
+                    <button class="btn btn-primary float-right" type="submit" [disabled]="propertyForm.invalid">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
