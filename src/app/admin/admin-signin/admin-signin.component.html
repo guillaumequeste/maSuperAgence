@@ -1,3 +1,19 @@
-<p>
-  admin-signin works!
-</p>
+<div class="container">
+    <h1 class="display-4 mt-5 mb-0">Authentification</h1>
+    <hr class="mt-0 mb-5 bg-dark">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
+            <form (ngSubmit)="onAuth(auth)" #auth="ngForm">
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="text" id="email" name="email" class="form-control" ngModel required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" class="form-control" ngModel required>
+                </div>
+                <button class="btn btn-primary" type="submit" [disabled]="auth.invalid">Connexion</button>
+            </form>
+        </div>
+    </div>
+</div>
