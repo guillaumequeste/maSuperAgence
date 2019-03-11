@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-admin-signin',
@@ -10,7 +11,7 @@ export class AdminSigninComponent implements OnInit {
 
   adminSignInForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.initForm();
@@ -26,7 +27,7 @@ export class AdminSigninComponent implements OnInit {
   onAuth() {
     const email = this.adminSignInForm.get('email').value;
     const password = this.adminSignInForm.get('password').value;
-    console.log(email + ' ' + password);
+    this.authenticationService.signInUser(email, password);
   }
 
 }
