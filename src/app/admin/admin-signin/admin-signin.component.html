@@ -3,16 +3,16 @@
     <hr class="mt-0 mb-5 bg-dark">
     <div class="row">
         <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
-            <form (ngSubmit)="onAuth(auth)" #auth="ngForm">
+            <form [formGroup]="adminSignInForm" (ngSubmit)="onAuth()">
                 <div class="form-group">
                     <label for="email">Adresse email</label>
-                    <input type="text" id="email" name="email" class="form-control" ngModel required>
+                    <input type="text" id="email" formControlName="email" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" class="form-control" ngModel required>
+                    <input type="password" id="password" formControlName="password" class="form-control">
                 </div>
-                <button class="btn btn-primary" type="submit" [disabled]="auth.invalid">Connexion</button>
+                <button class="btn btn-primary" type="submit" [disabled]="adminSignInForm.invalid">Connexion</button>
             </form>
         </div>
     </div>
